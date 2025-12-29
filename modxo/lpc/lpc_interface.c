@@ -102,7 +102,7 @@ static void io_read_hdlr(uint32_t address, uint8_t *data)
 
 // PIO
 static PIO _pio;
-static bool _disable_internal_flash = true;
+static bool _disable_internal_flash = false; //Internal flash enabled by default
 static uint offset;
 
 static void lpc_gpio_init(PIO pio)
@@ -279,13 +279,13 @@ void lpc_interface_start_sm()
 {
 
     pio_set_sm_mask_enabled(_pio, 15, false); // Disable All State Machines
-    pio_custom_init(_pio, LPC_OP_MEM_READ, offset, _disable_internal_flash);
-    pio_custom_init(_pio, LPC_OP_MEM_WRITE, offset, _disable_internal_flash);
+    //pio_custom_init(_pio, LPC_OP_MEM_READ, offset, _disable_internal_flash); Disable MEM_READ Transactions
+    //pio_custom_init(_pio, LPC_OP_MEM_WRITE, offset, _disable_internal_flash); Disable MEM_WRITE Transactions
     pio_custom_init(_pio, LPC_OP_IO_READ, offset, false);
     pio_custom_init(_pio, LPC_OP_IO_WRITE, offset, false);
     // Enable State Machines
-    pio_sm_set_enabled(_pio, LPC_OP_MEM_READ, true);
-    pio_sm_set_enabled(_pio, LPC_OP_MEM_WRITE, true);
+    //pio_sm_set_enabled(_pio, LPC_OP_MEM_READ, true);
+    //pio_sm_set_enabled(_pio, LPC_OP_MEM_WRITE, true);
     pio_sm_set_enabled(_pio, LPC_OP_IO_READ, true);
     pio_sm_set_enabled(_pio, LPC_OP_IO_WRITE, true);
     // pio_set_sm_mask_enabled(_pio, 15, true);//Enable All State Machines
